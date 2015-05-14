@@ -4,8 +4,8 @@ const BoardStore = require('../stores/BoardStore');
 const Tile       = require('./Tile.jsx');
 const TileRow    = require('./TileRow.jsx');
 const Header     = require('./Header.jsx');
-// const tinycolor  = require('tinycolor2');
-// const tileColors = require('../constants/tileColors');
+const tinycolor  = require('tinycolor2');
+const tileColors = require('../constants/tileColors');
 const css        = new SmartCSS({name: 'app'});
 // Size is hard coded, but can be easily expanded to a larger
 // board size. This would require more dynamic styles.
@@ -21,9 +21,15 @@ css.setClass('.root', {
   left       : '0',
   transition : '0.3s all',
 })
+css.setClass('.player1', {
+  background : tinycolor(tileColors[1]).setAlpha(0.3),
+})
+css.setClass('.player2', {
+  background : tinycolor(tileColors[2]).setAlpha(0.3),
+})
 css.setClass('.gameContainer', {
   width    : (64 * 3) + 'px',
-  margin   : '0 auto',
+  margin   : '20px auto 0 auto',
   position : 'relative',
 })
 
@@ -52,8 +58,18 @@ let App = React.createClass({
       }
       children[x] = <TileRow>{rowChildren}</TileRow>;
     }
+    let highlightPlayer;
+    if(BoardStore.gameEnded()){
+      highlightPlayer = BoardStore.getWinner();
+    }else{
+      highlightPlayer = BoardStore.getCurrentPlayer();
+    }
     return (
-      <div className={css.getClass("root")}>
+      <div className={css.getClasses({
+        root    : true,
+        player1 : highlightPlayer === 1,
+        player2 : highlightPlayer === 2,
+      })}>
         <div className={css.getClass("gameContainer")}>
           <Header></Header>
           {children}

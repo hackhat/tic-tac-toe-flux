@@ -8,9 +8,9 @@ const css           = new SmartCSS({name: 'header'});
 
 
 css.setClass('.root', {
-  width      : (64 * 3) + 'px',
-  height     : '64px',
-  border     : '1px solid white',
+  width      : (64 * 3 - 2) + 'px',
+  height     : '62px',
+  margin     : '1px',
   color      : 'white',
   padding    : '0 10px',
   cursor     : 'pointer',

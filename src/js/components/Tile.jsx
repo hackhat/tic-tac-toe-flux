@@ -12,22 +12,21 @@ var playerToken = {
 }
 
 css.setClass('.root', {
-  width      : '64px',
-  height     : '64px',
+  width      : '62px',
+  height     : '62px',
   display    : 'inline-block',
   lineHeight : '62px',
   textAlign  : 'center',
   fontSize   : '48px',
   float      : 'left',
-  border     : '1px solid white',
   cursor     : 'pointer',
   transition : '0.3s all',
-  background : tileColors[0],
-  color      : 'white',
+  background : 'white',
+  margin     : '1px'
 })
-css.setClass('.root:hover', {
-  background : tinycolor(tileColors[0]).brighten(10),
-})
+// css.setClass('.root:hover', {
+//   background : tinycolor(tileColors[0]).brighten(10),
+// })
 css.setClass('.player1', {
   background : tileColors[1],
 })
