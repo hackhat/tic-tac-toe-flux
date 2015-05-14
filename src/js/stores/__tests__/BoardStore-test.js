@@ -157,6 +157,7 @@ describe('BoardStore', function() {
     playPosition(2, 1);
     expect(BoardStore.getWinner()).toBe(void 0);
     expect(BoardStore.gameEnded()).toBe(true);
+    expect(BoardStore.isDrawGame()).toBe(true);
   });
 
 });

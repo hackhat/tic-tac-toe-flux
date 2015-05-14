@@ -168,6 +168,10 @@ let BoardStore = assign({}, BaseStore, {
     return getCurrentPlayer()
   },
 
+  isDrawGame() {
+    return this.gameEnded() && this.getWinner() === void 0;
+  },
+
   dispatcherIndex: AppDispatcher.register(function(payload) {
     let action = payload.action;
 

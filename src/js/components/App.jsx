@@ -3,6 +3,7 @@ const SmartCSS   = require('smart-css');
 const BoardStore = require('../stores/BoardStore');
 const Tile       = require('./Tile.jsx');
 const TileRow    = require('./TileRow.jsx');
+const Header     = require('./Header.jsx');
 const css        = new SmartCSS({name: 'app'});
 // Size is hard coded, but can be easily expanded to a larger
 // board size. This would require more dynamic styles.
@@ -43,6 +44,7 @@ let App = React.createClass({
     }
     return (
       <div className={css.getClass("root")}>
+        <Header></Header>
         {children}
       </div>
     );
