@@ -34,8 +34,6 @@ describe('BoardStore', function() {
   it('should initialize with empty board', function() {
     let tiles = BoardStore.getTiles();
     let boardSize = BoardStore.getSize();
-    expect(BoardStore.gameEnded()).toBe(false);
-    expect(BoardStore.getWinner()).toBe(void 0);
     for(let x = 0; x < boardSize; x++) {
       for(let y = 0; y < boardSize; y++) {
         expect(tiles[x][y]).toBe(0);
@@ -43,7 +41,16 @@ describe('BoardStore', function() {
     }
   });
 
+  it('should initialize without a winner', function() {
+    expect(BoardStore.getWinner()).toBe(void 0);
+  });
+
+  it('should initialize without a game ended', function() {
+    expect(BoardStore.gameEnded()).toBe(false);
+  });
+
   it('should have player 1 as first player', function() {
+    expect(BoardStore.getCurrentPlayer()).toBe(1);
     playPosition(1, 2);
     let tiles = BoardStore.getTiles();
     expect(tiles[1][2]).toBe(1);
@@ -51,9 +58,48 @@ describe('BoardStore', function() {
 
   it('should have player 2 as second player', function() {
     playPosition(0, 0);
+    expect(BoardStore.getCurrentPlayer()).toBe(2);
     playPosition(1, 0);
     let tiles = BoardStore.getTiles();
     expect(tiles[1][0]).toBe(2);
+  });
+
+  describe('invalid play', function() {
+
+    it('should not switch player when play on the same tile', function() {
+      playPosition(0, 0);
+      playPosition(0, 0);
+      expect(BoardStore.getCurrentPlayer()).toBe(2);
+    });
+
+    it('should not switch player when play out of bounds (too big)', function() {
+      playPosition(5, 0);
+      expect(BoardStore.getCurrentPlayer()).toBe(1);
+    });
+
+    it('should not switch player when play out of bounds (too small)', function() {
+      playPosition(-1, 0);
+      expect(BoardStore.getCurrentPlayer()).toBe(1);
+    });
+
+    it('should not play after game ended', function() {
+      playPosition(0, 0); // player 1
+      playPosition(1, 1); // player 2
+      playPosition(0, 1); // player 1
+      playPosition(1, 2); // player 2
+      playPosition(0, 2); // player 1 wins!
+      playPosition(2, 2); // Invalid move, should not be counted.
+      let tiles = BoardStore.getTiles();
+      expect(tiles[2][2]).toBe(0);
+    });
+
+  })
+
+  it('should not override when play on the same tile', function() {
+    playPosition(0, 0);
+    playPosition(0, 0);
+    let tiles = BoardStore.getTiles();
+    expect(tiles[0][0]).toBe(1);
   });
 
   describe('win', function() {

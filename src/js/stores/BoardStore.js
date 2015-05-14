@@ -165,7 +165,10 @@ let BoardStore = assign({}, BaseStore, {
 
     switch(action.type) {
       case Constants.ActionTypes.PLAY_POSITION:
+        if(BoardStore.gameEnded()) return;
         let {x, y} = action.pos;
+        if(x >= BoardStore.getSize() || x < 0) return;
+        if(y >= BoardStore.getSize() || y < 0) return;
         if(isOwned(x, y)) return;
         // @todo: if game ended return;
         setOwner(x, y, getCurrentPlayer());
