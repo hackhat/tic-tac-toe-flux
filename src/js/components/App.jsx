@@ -19,13 +19,12 @@ css.setClass('.root', {
 let App = React.createClass({
 
   render() {
-    let tiles = BoardStore.getTiles();
     let children = [];
     let boardSize = BoardStore.getSize();
     for(let x = 0; x < boardSize; x++) {
       let rowChildren = [];
       for(let y = 0; y < boardSize; y++) {
-        rowChildren.push(<Tile owner={tiles[x][y]}></Tile>);
+        rowChildren.push(<Tile x={x} y={y}></Tile>);
       }
       children[x] = <div>{rowChildren}</div>;
     }
