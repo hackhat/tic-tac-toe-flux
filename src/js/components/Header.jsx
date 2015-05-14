@@ -41,10 +41,6 @@ css.setClass('.title', {
 
 let Header = React.createClass({
 
-  getDefaultProps() {
-    return {};
-  },
-
   onHeaderClick() {
     ActionCreator.restartGame();
   },
