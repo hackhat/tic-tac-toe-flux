@@ -4,6 +4,12 @@ const BoardStore    = require('../stores/BoardStore');
 const ActionCreator = require('../actions/BoardActionCreators');
 const Tile          = require('./Tile.jsx');
 const css           = new SmartCSS({name: 'app'});
+// Size is hard coded, but can be easily expanded to a larger
+// board size. This would require more dynamic styles.
+// Currently doesn't fill width because would involve calculating
+// the available width in js and then set that dynamically. (Because
+// the tiles should have 1:1 aspect ratio and just setting a percentage
+// on width is not enough).
 css.setClass('.root', {
   width  : (64 * 3) + 'px',
   height : (64 * 3) + 'px',
