@@ -45,8 +45,18 @@ let _winnerTiles;
  */
 let _gameEnded;
 
+/**
+ * The size of the board. You can't actually just change this and expect everything
+ * to work. You need to make many more updates: view layer, logic layer...
+ * @type {Number}
+ */
 const BOARD_SIZE = 3;
 
+/**
+ * Adds certain tiles to the winner tiles set. This is needed to show which tiles
+ * lead to the winning state.
+ * @param {Object[]} An array of objects that contains the x and y keys.
+ */
 function addWinnerTiles(tiles) {
   tiles.forEach(function(tile){
     var res = _.find(_winnerTiles, tile);
@@ -56,28 +66,56 @@ function addWinnerTiles(tiles) {
   })
 }
 
+/**
+ * Checks whenever the tile x, y is owned or not.
+ * @param  {Number} x 
+ * @param  {Number} y
+ * @return {Boolean} True if owned, false if not.
+ */
 function isOwned(x, y) {
   return _data[x][y] !== 0;
 }
 
+/**
+ * Sets a owner for a certain tile
+ * @param {Number} x
+ * @param {Number} y
+ * @param {Number} ownerId
+ */
 function setOwner(x, y, ownerId) {
   _data[x][y] = ownerId;
 }
 
+/**
+ * Gets the owned of a certain tile.
+ * @param  {Number} x 
+ * @param  {Number} y
+ * @return {Number} Returns the owner id. If not owned returns 0.
+ */
 function getOwner(x, y){
   return _data[x][y];
 }
 
+/**
+ * Returns the current player id.
+ * @return {Number}
+ */
 function getCurrentPlayer() {
   return _currentPlayer;
 }
 
+/**
+ * Switches the players.
+ * @return {Number}
+ */
 function switchPlayers() {
   _currentPlayer = _currentPlayer === 1 ? 2 : 1;
 }
 
 /**
- * A winner should have 3 tiles in horizontal, vertical or diagonal.
+ * Checks whenver the values are the same. 
+ * @param  {Number[]} array
+ * @return {Boolean} True if all values are equal. False in other cases.
  */
 function sameValueInArray(array) {
   let i = array.length;
@@ -88,14 +126,28 @@ function sameValueInArray(array) {
   return true;
 }
 
+
+/**
+ * Returns the owner from a certain line. A line is an array of tiles.
+ * @param  {Object[]} tile
+ * @return {[type]}
+ */
 function getWinnerFromLine(line) {
   let winnerInThisLine = line[0] !== 0 && sameValueInArray(line);
   if(winnerInThisLine) return line[0];
   return false;
 }
 
+/**
+ * Updates the current winner.
+ */
 function updateWinner() {
   if(_winner !== void 0) return;
+
+  // For every check, if passes then the tiles are added to winner tiles. This is required
+  // in order to be able to highlight the winning tiles.
+  // Should not exit at the first passed check because need to find all winning tiles, for example
+  // when you make a T match you win horizonatlly and vertically.
 
   // Vertical check
   for(let i = 0; i < BOARD_SIZE; i++){
@@ -150,6 +202,9 @@ function updateWinner() {
   }
 }
 
+/**
+ * @return {Boolean} Checks whenever has available tiles or not.
+ */
 function hasAvailableTiles() {
   for(let x = 0; x < BOARD_SIZE; x++) {
     for(let y = 0; y < BOARD_SIZE; y++) {
@@ -158,6 +213,9 @@ function hasAvailableTiles() {
   }
 }
 
+/**
+ * Updates the game state, this sets the _gameEnded variable.
+ */
 function updateGameState() {
   if(_winner !== void 0 || !hasAvailableTiles()){
     _gameEnded = true;
@@ -184,6 +242,11 @@ reset();
 
 let BoardStore = assign({}, BaseStore, {
 
+  /**
+   * Returns all the tiles in a map. You can get the owner of the tile by
+   * doing tiles[x][y].
+   * @return {Array[]}
+   */
   getTiles() {
     return _data;
   },
