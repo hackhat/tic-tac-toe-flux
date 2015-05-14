@@ -2,6 +2,7 @@ const AppDispatcher = require('../dispatchers/AppDispatcher');
 const Constants = require('../constants/AppConstants');
 const BaseStore = require('./BaseStore');
 const assign = require('object-assign');
+const _ = require('lodash');
 
 /**
  * The data contains information about the board.
@@ -34,12 +35,26 @@ let _currentPlayer;
 let _winner;
 
 /**
+ * Stores the tiles that lead to a winner.
+ */
+let _winnerTiles;
+
+/**
  * Whenever the game has ended or not. A game ends when there are no more
  * empty tiles or a player won.
  */
 let _gameEnded;
 
 const BOARD_SIZE = 3;
+
+function addWinnerTiles(tiles) {
+  tiles.forEach(function(tile){
+    var res = _.find(_winnerTiles, tile);
+    if(!_.find(_winnerTiles, tile)){
+      _winnerTiles.push(tile);
+    }
+  })
+}
 
 function isOwned(x, y) {
   return _data[x][y] !== 0;
@@ -84,35 +99,55 @@ function updateWinner() {
 
   // Vertical check
   for(let i = 0; i < BOARD_SIZE; i++){
-    let winnerFound = _winner !== void 0;
-    if(winnerFound) return;
     let line = [getOwner(i, 0), getOwner(i, 1), getOwner(i, 2)];
     var winnerInLine = getWinnerFromLine(line);
-    if(winnerInLine !== false) _winner = line[0];
+    if(winnerInLine){
+      _winner = line[0]
+      addWinnerTiles([
+        {x: i, y: 0},
+        {x: i, y: 1},
+        {x: i, y: 2},
+      ]);
+    };
   }
-  if(_winner !== void 0) return _winner;
 
   // Horizontal check
   for(let i = 0; i < BOARD_SIZE; i++){
-    let winnerFound = _winner !== void 0;
-    if(winnerFound) return;
     let line = [getOwner(0, i), getOwner(1, i), getOwner(2, i)];
     var winnerInLine = getWinnerFromLine(line);
-    if(winnerInLine !== false) _winner = line[0];
+    if(winnerInLine){
+      _winner = line[0];
+      addWinnerTiles([
+        {x: 0, y: i},
+        {x: 1, y: i},
+        {x: 2, y: i},
+      ]);
+    }
   }
-  if(_winner !== void 0) return _winner;
 
   // Diagonal check top-left to bottom-right
   let diag1 = [getOwner(0, 0), getOwner(1, 1), getOwner(2, 2)];
   let winnerInLine1 = getWinnerFromLine(diag1);
-  if(winnerInLine1 !== false) _winner = diag1[0];
-  if(_winner !== void 0) return _winner;
+  if(winnerInLine1){
+    _winner = diag1[0];
+    addWinnerTiles([
+      {x: 0, y: 0},
+      {x: 1, y: 1},
+      {x: 2, y: 2},
+    ]);
+  }
 
   // Diagonal check top-right to bottom-left
   let diag2 = [getOwner(2, 0), getOwner(1, 1), getOwner(0, 2)];
   let winnerInLine2 = getWinnerFromLine(diag2);
-  if(winnerInLine2 !== false) _winner = diag2[0];
-  if(_winner !== void 0) return _winner;
+  if(winnerInLine2){
+    _winner = diag2[0];
+    addWinnerTiles([
+      {x: 2, y: 0},
+      {x: 1, y: 1},
+      {x: 0, y: 2},
+    ]);
+  }
 }
 
 function hasAvailableTiles() {
@@ -137,6 +172,7 @@ function reset() {
   _data          = [];
   _gameEnded     = false;
   _winner        = void 0;
+  _winnerTiles   = [];
   for(let x = 0; x < BOARD_SIZE; x++) {
     _data[x] = [];
     for(let y = 0; y < BOARD_SIZE; y++) {
@@ -150,6 +186,14 @@ let BoardStore = assign({}, BaseStore, {
 
   getTiles() {
     return _data;
+  },
+
+  getWinnerTiles() {
+    return _winnerTiles;
+  },
+
+  isWinnerTile(x, y) {
+    return !!_.find(_winnerTiles, {x: x, y: y});
   },
 
   getSize() {

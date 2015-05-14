@@ -8,3 +8,8 @@
     -ms-user-select: none;
     user-select: none;
 }
+
+@-webkit-keyframes winnerTileAnimation {
+    from {opacity: 0.25;}
+    to {opacity: 1;}
+}

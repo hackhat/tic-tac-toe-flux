@@ -22,10 +22,10 @@ css.setClass('.root', {
   transition : '0.3s all',
 })
 css.setClass('.player1', {
-  background : tinycolor(tileColors[1]).setAlpha(0.3),
+  background : tinycolor(tileColors[1]).setAlpha(0.2),
 })
 css.setClass('.player2', {
-  background : tinycolor(tileColors[2]).setAlpha(0.3),
+  background : tinycolor(tileColors[2]).setAlpha(0.2),
 })
 css.setClass('.gameContainer', {
   width    : (64 * 3) + 'px',
@@ -54,7 +54,7 @@ let App = React.createClass({
     for(let x = 0; x < boardSize; x++) {
       let rowChildren = [];
       for(let y = 0; y < boardSize; y++) {
-        rowChildren.push(<Tile x={x} y={y} owner={tiles[x][y]}></Tile>);
+        rowChildren.push(<Tile x={x} y={y} owner={tiles[x][y]} isWinnerTile={BoardStore.isWinnerTile(x, y)}></Tile>);
       }
       children[x] = <TileRow>{rowChildren}</TileRow>;
     }

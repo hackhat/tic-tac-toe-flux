@@ -24,9 +24,9 @@ css.setClass('.root', {
   background : 'white',
   margin     : '1px'
 })
-// css.setClass('.root:hover', {
-//   background : tinycolor(tileColors[0]).brighten(10),
-// })
+css.setClass('.winnerTile', {
+  '-webkit-animation': 'winnerTileAnimation 0.5s linear infinite alternate'
+})
 css.setClass('.player1', {
   background : tileColors[1],
 })
@@ -44,9 +44,10 @@ let Tile = React.createClass({
 
   getDefaultProps() {
     return {
-      x     : void 0,
-      y     : void 0,
-      owner : void 0,
+      x            : void 0,
+      y            : void 0,
+      owner        : void 0,
+      isWinnerTile : false,
     };
   },
 
@@ -62,9 +63,10 @@ let Tile = React.createClass({
     let {x, y, owner} = this.props;
     return (
       <div className={css.getClasses({
-        root    : true,
-        player1 : owner === 1,
-        player2 : owner === 2,
+        root       : true,
+        player1    : owner === 1,
+        player2    : owner === 2,
+        winnerTile : this.props.isWinnerTile
       })} onClick={this.onTileClick}>
         {playerToken[owner]}
       </div>
