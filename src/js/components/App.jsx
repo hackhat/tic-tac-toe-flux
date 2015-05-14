@@ -1,8 +1,9 @@
-const React         = require('react');
-const SmartCSS      = require('smart-css');
-const BoardStore    = require('../stores/BoardStore');
-const Tile          = require('./Tile.jsx');
-const css           = new SmartCSS({name: 'app'});
+const React      = require('react');
+const SmartCSS   = require('smart-css');
+const BoardStore = require('../stores/BoardStore');
+const Tile       = require('./Tile.jsx');
+const TileRow    = require('./TileRow.jsx');
+const css        = new SmartCSS({name: 'app'});
 // Size is hard coded, but can be easily expanded to a larger
 // board size. This would require more dynamic styles.
 // Currently doesn't fill width because would involve calculating
@@ -37,7 +38,7 @@ let App = React.createClass({
       for(let y = 0; y < boardSize; y++) {
         rowChildren.push(<Tile x={x} y={y}></Tile>);
       }
-      children[x] = <div>{rowChildren}</div>;
+      children[x] = <TileRow>{rowChildren}</TileRow>;
     }
     return (
       <div className={css.getClass("root")}>

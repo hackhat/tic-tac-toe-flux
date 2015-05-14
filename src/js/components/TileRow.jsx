@@ -5,6 +5,7 @@ const css           = new SmartCSS({name: 'app'});
 css.setClass('.root', {
   width  : (64 * 3) + 'px',
   height : (64 * 1) + 'px',
+  float  : 'left'
 })
 
 let Tile = React.createClass({
@@ -12,7 +13,7 @@ let Tile = React.createClass({
   render() {
     return (
       <div className={css.getClass("root")}>
-
+        {this.props.children}
       </div>
     );
   }
