@@ -42,10 +42,8 @@ reset();
 
 let BoardStore = assign({}, BaseStore, {
 
-  getAll() {
-    return {
-      tiles: _data
-    };
+  getTiles() {
+    return _data;
   },
 
   getSize() {
