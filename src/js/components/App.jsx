@@ -33,10 +33,11 @@ let App = React.createClass({
   render() {
     let children = [];
     let boardSize = BoardStore.getSize();
+    let tiles = BoardStore.getTiles();
     for(let x = 0; x < boardSize; x++) {
       let rowChildren = [];
       for(let y = 0; y < boardSize; y++) {
-        rowChildren.push(<Tile x={x} y={y}></Tile>);
+        rowChildren.push(<Tile x={x} y={y} owner={tiles[x][y]}></Tile>);
       }
       children[x] = <TileRow>{rowChildren}</TileRow>;
     }
