@@ -1,5 +1,4 @@
 const React         = require('react');
-const BoardStore    = require('../stores/BoardStore');
 const SmartCSS      = require('smart-css');
 const ActionCreator = require('../actions/BoardActionCreators');
 const tinycolor     = require('tinycolor2');
