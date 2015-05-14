@@ -1,7 +1,6 @@
 
 # tic-tac-toe-flux (tic-tac-toe-flux)
 
-> ...
 
 ## Running your project
 
@@ -17,6 +16,11 @@ If you prefer to just build without the live reload and build-on-each-change wat
 $ npm run build
 ```
 
+To test run:
+
+```bash
+$ npm run test
+```
 
 ## Generating Additional Code
 

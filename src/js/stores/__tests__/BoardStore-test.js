@@ -2,10 +2,12 @@ jest.dontMock('../../constants/AppConstants');
 jest.dontMock('../BoardStore');
 jest.dontMock('object-assign');
 jest.dontMock('react/lib/keyMirror');
+jest.dontMock('lodash');
 
 describe('BoardStore', function() {
 
   let AppConstants = require('../../constants/AppConstants');
+  let _ = require('lodash');
   let AppDispatcher;
   let BoardStore;
   let callback;
@@ -112,6 +114,10 @@ describe('BoardStore', function() {
       playPosition(0, 2); // player 1
       expect(BoardStore.getWinner()).toBe(1);
       expect(BoardStore.gameEnded()).toBe(true);
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 0, y: 0})).toBeTruthy();
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 0, y: 1})).toBeTruthy();
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 0, y: 2})).toBeTruthy();
+      expect(BoardStore.getWinnerTiles().length).toBe(3);
     });
 
     it('should win when player 1 makes 3 tiles in horizontal', function() {
@@ -122,6 +128,10 @@ describe('BoardStore', function() {
       playPosition(2, 0); // player 1
       expect(BoardStore.getWinner()).toBe(1);
       expect(BoardStore.gameEnded()).toBe(true);
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 0, y: 0})).toBeTruthy();
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 1, y: 0})).toBeTruthy();
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 2, y: 0})).toBeTruthy();
+      expect(BoardStore.getWinnerTiles().length).toBe(3);
     });
 
     it('should win when player 1 makes the diagonal top-left to bottom-right', function() {
@@ -132,6 +142,10 @@ describe('BoardStore', function() {
       playPosition(2, 2); // player 1
       expect(BoardStore.getWinner()).toBe(1);
       expect(BoardStore.gameEnded()).toBe(true);
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 0, y: 0})).toBeTruthy();
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 1, y: 1})).toBeTruthy();
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 2, y: 2})).toBeTruthy();
+      expect(BoardStore.getWinnerTiles().length).toBe(3);
     });
 
     it('should win when player 1 makes the diagonal top-right to bottom-left', function() {
@@ -142,7 +156,33 @@ describe('BoardStore', function() {
       playPosition(0, 2); // player 1
       expect(BoardStore.getWinner()).toBe(1);
       expect(BoardStore.gameEnded()).toBe(true);
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 2, y: 0})).toBeTruthy();
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 1, y: 1})).toBeTruthy();
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 0, y: 2})).toBeTruthy();
+      expect(BoardStore.getWinnerTiles().length).toBe(3);
     });
+
+    it('should set all 5 tiles as winning tiles on T bone winning scheme', function() {
+      playPosition(0, 0); // player 1
+      playPosition(1, 0); // player 2
+      playPosition(1, 1); // player 1
+      playPosition(2, 0); // player 2
+      playPosition(2, 1); // player 1
+      playPosition(1, 2); // player 2
+      playPosition(0, 2); // player 1
+      playPosition(2, 2); // player 2
+      playPosition(0, 1); // player 1
+      expect(BoardStore.getWinner()).toBe(1);
+      expect(BoardStore.gameEnded()).toBe(true);
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 0, y: 0})).toBeTruthy();
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 1, y: 1})).toBeTruthy();
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 2, y: 1})).toBeTruthy();
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 0, y: 2})).toBeTruthy();
+      expect(_.find(BoardStore.getWinnerTiles(), {x: 0, y: 1})).toBeTruthy();
+      expect(BoardStore.getWinnerTiles().length).toBe(5);
+    });
+
+    // @todo: test for T where more than 3 tiles are winning tiles at the same time
   })
 
   it('should end the game when no more tiles are available', function() {
