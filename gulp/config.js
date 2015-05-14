@@ -6,7 +6,7 @@ module.exports = {
   server: {
     settings: {
       root: dest,
-      host: 'localhost',
+      host: gutil.env.host === void 0 ? 'localhost' : gutil.env.host,
       port: 8080,
       livereload: {
         port: 35929

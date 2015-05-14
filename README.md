@@ -14,6 +14,8 @@ The generated project includes a live-reloading static server on port `8080` (yo
 $ npm start
 ```
 
+If you want to run on a certain host run with `npm run dev --host=192.168.1.70`;
+
 If you prefer to just build without the live reload and build-on-each-change watcher, run:
 
 ```bash
