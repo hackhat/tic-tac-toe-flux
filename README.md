@@ -1,6 +1,8 @@
+<p align="center">
+  <img src ="./docs/repo-header.gif" />
+</p>
 
-# tic-tac-toe-flux (tic-tac-toe-flux)
-
+**[Live example](https://cdn.rawgit.com/hackhat/tic-tac-toe-flux/v0.0.1/dist/index.html)**
 
 ## Running your project
 
