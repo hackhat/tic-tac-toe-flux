@@ -4,6 +4,8 @@ const BoardStore = require('../stores/BoardStore');
 const Tile       = require('./Tile.jsx');
 const TileRow    = require('./TileRow.jsx');
 const Header     = require('./Header.jsx');
+// const tinycolor  = require('tinycolor2');
+// const tileColors = require('../constants/tileColors');
 const css        = new SmartCSS({name: 'app'});
 // Size is hard coded, but can be easily expanded to a larger
 // board size. This would require more dynamic styles.
@@ -12,9 +14,17 @@ const css        = new SmartCSS({name: 'app'});
 // the tiles should have 1:1 aspect ratio and just setting a percentage
 // on width is not enough).
 css.setClass('.root', {
-  width  : (64 * 3) + 'px',
-  height : (64 * 3) + 'px',
-  margin : '0 auto',
+  position   : 'absolute',
+  top        : '0',
+  right      : '0',
+  bottom     : '0',
+  left       : '0',
+  transition : '0.3s all',
+})
+css.setClass('.gameContainer', {
+  width    : (64 * 3) + 'px',
+  margin   : '0 auto',
+  position : 'relative',
 })
 
 let App = React.createClass({
@@ -44,8 +54,10 @@ let App = React.createClass({
     }
     return (
       <div className={css.getClass("root")}>
-        <Header></Header>
-        {children}
+        <div className={css.getClass("gameContainer")}>
+          <Header></Header>
+          {children}
+        </div>
       </div>
     );
   }

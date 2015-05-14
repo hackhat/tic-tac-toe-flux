@@ -14,6 +14,7 @@ css.setClass('.root', {
   color      : 'white',
   padding    : '0 10px',
   cursor     : 'pointer',
+  transition : '0.3s all',
 })
 css.setClass('.player1', {
   background : tileColors[1],
