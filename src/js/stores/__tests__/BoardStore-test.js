@@ -145,4 +145,18 @@ describe('BoardStore', function() {
     });
   })
 
+  it('should end the game when no more tiles are available', function() {
+    playPosition(0, 0);
+    playPosition(0, 1);
+    playPosition(0, 2);
+    playPosition(1, 0);
+    playPosition(1, 2);
+    playPosition(1, 1);
+    playPosition(2, 0);
+    playPosition(2, 2);
+    playPosition(2, 1);
+    expect(BoardStore.getWinner()).toBe(void 0);
+    expect(BoardStore.gameEnded()).toBe(true);
+  });
+
 });

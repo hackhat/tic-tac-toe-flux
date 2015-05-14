@@ -115,8 +115,16 @@ function updateWinner() {
   if(_winner !== void 0) return _winner;
 }
 
+function hasAvailableTiles() {
+  for(let x = 0; x < BOARD_SIZE; x++) {
+    for(let y = 0; y < BOARD_SIZE; y++) {
+      if(_data[x][y] === 0) return true;
+    }
+  }
+}
+
 function updateGameState() {
-  if(_winner !== void 0){
+  if(_winner !== void 0 || !hasAvailableTiles()){
     _gameEnded = true;
   }
 }
