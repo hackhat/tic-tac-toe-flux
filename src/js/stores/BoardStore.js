@@ -20,17 +20,36 @@ const assign = require('object-assign');
  *
  * @type {Array}
  */
-let _data = [];
+let _data;
+
+/**
+ * We only have player 1 and player 2. After each turn players are switched.
+ */
+let _currentPlayer;
 const BOARD_SIZE = 3;
+
+function isOwned(x, y) {
+  return _data[x][y] !== 0;
+}
 
 function setOwner(x, y, ownerId) {
   _data[x][y] = ownerId;
+}
+
+function getCurrentPlayer() {
+  return _currentPlayer;
+}
+
+function switchPlayers() {
+  _currentPlayer = _currentPlayer === 1 ? 2 : 1;
 }
 
 /**
  * Resets the board to a initial value.
  */
 function reset() {
+  _currentPlayer = 1;
+  _data = [];
   for(let x = 0; x < BOARD_SIZE; x++) {
     _data[x] = [];
     for(let y = 0; y < BOARD_SIZE; y++) {
@@ -55,17 +74,11 @@ let BoardStore = assign({}, BaseStore, {
 
     switch(action.type) {
       case Constants.ActionTypes.PLAY_POSITION:
-        debugger;
-        // @todo: setOwner
-        return;
-        let text = action.text.trim();
-        // NOTE: if this action needs to wait on another store:
-        // AppDispatcher.waitFor([OtherStore.dispatchToken]);
-        // For details, see: http://facebook.github.io/react/blog/2014/07/30/flux-actions-and-the-dispatcher.html#why-we-need-a-dispatcher
-        if (text !== '') {
-          addItem(text);
-          BoardStore.emitChange();
-        }
+        let {x, y} = action.pos;
+        if(isOwned(x, y)) return;
+        setOwner(x, y, getCurrentPlayer());
+        switchPlayers();
+        BoardStore.emitChange();
         break;
 
       // add more cases for other actionTypes...

@@ -1,7 +1,6 @@
 const React         = require('react');
 const SmartCSS      = require('smart-css');
 const BoardStore    = require('../stores/BoardStore');
-const ActionCreator = require('../actions/BoardActionCreators');
 const Tile          = require('./Tile.jsx');
 const css           = new SmartCSS({name: 'app'});
 // Size is hard coded, but can be easily expanded to a larger
@@ -17,6 +16,18 @@ css.setClass('.root', {
 })
 
 let App = React.createClass({
+
+  _onChange() {
+    this.forceUpdate();
+  },
+
+  componentDidMount() {
+    BoardStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount() {
+    BoardStore.removeChangeListener(this._onChange);
+  },
 
   render() {
     let children = [];

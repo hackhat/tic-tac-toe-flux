@@ -18,11 +18,19 @@ let Tile = React.createClass({
     };
   },
 
+  onTileClick() {
+    let {x, y} = this.props;
+    ActionCreator.playPosition({
+      x : x,
+      y : y
+    });
+  },
+
   render() {
     let tiles = BoardStore.getTiles();
     let {x, y} = this.props;
     return (
-      <div className={css.getClass("root")}>
+      <div className={css.getClass("root")} onClick={this.onTileClick}>
         {tiles[x][y]}
       </div>
     );

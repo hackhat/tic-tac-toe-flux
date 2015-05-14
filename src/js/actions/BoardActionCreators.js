@@ -4,14 +4,14 @@ var Constants = require('../constants/AppConstants');
 module.exports = {
 
   /**
-   * @param  {Object} position
-   * @param  {Number} position.x
-   * @param  {Number} position.y
+   * @param  {Object} pos
+   * @param  {Number} pos.x
+   * @param  {Number} pos.y
    */
-  playPosition: function(position) {
+  playPosition: function(pos) {
     AppDispatcher.handleViewAction({
-      type: Constants.ActionTypes.ADD_TASK,
-      text: text
+      type : Constants.ActionTypes.PLAY_POSITION,
+      pos  : pos
     });
   },
 
