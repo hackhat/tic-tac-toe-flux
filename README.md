@@ -2,7 +2,7 @@
   <img src ="./docs/repo-header.gif" />
 </p>
 
-**[Live example](https://cdn.rawgit.com/hackhat/tic-tac-toe-flux/v0.0.1/dist/index.html)**
+**[Live example](https://rawgit.com/hackhat/tic-tac-toe-flux/v0.0.2/dist/index.html)**
 
 ## Running your project
 
