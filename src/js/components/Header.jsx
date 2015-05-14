@@ -11,10 +11,8 @@ css.setClass('.root', {
   height     : '64px',
   border     : '1px solid white',
   color      : 'white',
-  fontSize   : '22px',
-  lineHeight : '62px',
   padding    : '0 10px',
-  cursor     : 'default',
+  cursor     : 'pointer',
 })
 css.setClass('.player1', {
   background : tileColors[1],
@@ -29,7 +27,15 @@ css.setClass('.player2:hover', {
   background : tinycolor(tileColors[2]).brighten(10),
 })
 css.setClass('.draw', {
-  background : tileColors[0],
+  background : tinycolor(tileColors[0]).darken(10),
+})
+css.setClass('.draw:hover', {
+  background : tinycolor(tileColors[0]).darken(20),
+})
+css.setClass('.title', {
+  fontSize   : '22px',
+  lineHeight : '36px',
+  display    : 'block'
 })
 
 let Header = React.createClass({
@@ -57,7 +63,8 @@ let Header = React.createClass({
         player2 : highlightPlayer === 2,
         draw    : BoardStore.isDrawGame()
       })}>
-        {text}
+        <span className={css.getClass('title')}>{text}</span>
+        <span>Click to restart the game</span>
       </div>
     );
   }
