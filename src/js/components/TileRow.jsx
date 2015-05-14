@@ -3,9 +3,9 @@ const SmartCSS      = require('smart-css');
 const ActionCreator = require('../actions/BoardActionCreators');
 const css           = new SmartCSS({name: 'tileRow'});
 css.setClass('.root', {
-  width  : (64 * 3) + 'px',
-  height : (64 * 1) + 'px',
-  float  : 'left'
+  width   : (64 * 3) + 'px',
+  height  : (64 * 1) + 'px',
+  display : 'block'
 })
 
 let Tile = React.createClass({

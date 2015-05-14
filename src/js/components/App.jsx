@@ -14,12 +14,12 @@ const css        = new SmartCSS({name: 'app'});
 // the tiles should have 1:1 aspect ratio and just setting a percentage
 // on width is not enough).
 css.setClass('.root', {
-  position   : 'absolute',
   top        : '0',
   right      : '0',
   bottom     : '0',
   left       : '0',
   transition : '0.3s all',
+  minHeight  : '100%',
 })
 css.setClass('.player1', {
   background : tinycolor(tileColors[1]).setAlpha(0.2),
@@ -29,8 +29,9 @@ css.setClass('.player2', {
 })
 css.setClass('.gameContainer', {
   width    : (64 * 3) + 'px',
-  margin   : '20px auto 0 auto',
+  margin   : ' 0 auto',
   position : 'relative',
+  padding  : '60px 0 20px 0',
 })
 
 let App = React.createClass({
