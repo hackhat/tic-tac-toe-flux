@@ -3,19 +3,16 @@ var Constants = require('../constants/AppConstants');
 
 module.exports = {
 
-  addItem: function(text) {
+  /**
+   * @param  {Object} position
+   * @param  {Number} position.x
+   * @param  {Number} position.y
+   */
+  playPosition: function(position) {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.ADD_TASK,
       text: text
     });
   },
-
-  clearList: function() {
-    console.warn('clearList action not yet implemented...');
-  },
-
-  completeTask: function(task) {
-    console.warn('completeTask action not yet implemented...');
-  }
 
 };

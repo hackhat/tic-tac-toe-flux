@@ -3,7 +3,7 @@ const keyMirror = require('react/lib/keyMirror');
 module.exports = {
 
   ActionTypes: keyMirror({
-    ADD_TASK: null
+    PLAY_POSITION: null
   }),
 
   ActionSources: keyMirror({
