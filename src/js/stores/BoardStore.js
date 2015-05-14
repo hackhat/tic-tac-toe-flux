@@ -251,30 +251,60 @@ let BoardStore = assign({}, BaseStore, {
     return _data;
   },
 
+  /**
+   * Returns an array with the tiles that lead to a winner. Empty if no one
+   * won. Be careful that it can contain more than 3 tiles.
+   * @return {Object[]} winer tiles;
+   */
   getWinnerTiles() {
     return _winnerTiles;
   },
 
+  /**
+   * Checks whenever a certain tile is a winner tile.
+   * @param  {Number} x
+   * @param  {Number} y
+   * @return {Boolean}
+   */
   isWinnerTile(x, y) {
     return !!_.find(_winnerTiles, {x: x, y: y});
   },
 
+  /**
+   * Returns the size of the board.
+   * @return {Number}
+   */
   getSize() {
     return BOARD_SIZE;
   },
 
+  /**
+   * Returns the player id that won if any. If no player won then this value will be
+   * undefined.
+   * @return {Number|undefined}
+   */
   getWinner() {
     return _winner;
   },
 
+  /**
+   * @return {Boolean} Returns true if game has ended and false if has not yet ended.
+   */
   gameEnded() {
     return _gameEnded;
   },
 
+  /**
+   * @return {Number} Returns the current player id.
+   */
   getCurrentPlayer() {
     return getCurrentPlayer()
   },
 
+  /**
+   * @return {Boolean} Returns true if is a draw game. This happens only
+   *                   if there is no winner and the game ended.
+   */
   isDrawGame() {
     return this.gameEnded() && this.getWinner() === void 0;
   },
