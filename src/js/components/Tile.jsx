@@ -1,6 +1,7 @@
 const React         = require('react');
 const SmartCSS      = require('smart-css');
 const ActionCreator = require('../actions/BoardActionCreators');
+const BoardStore    = require('../stores/BoardStore');
 const tinycolor     = require('tinycolor2');
 const tileColors    = require('../constants/tileColors');
 const css           = new SmartCSS({name: 'tile'});
@@ -24,8 +25,17 @@ css.setClass('.root', {
   background : 'white',
   margin     : '1px'
 })
+css.setClass('.blocked', {
+  cursor : 'not-allowed',
+})
 css.setClass('.winnerTile', {
   '-webkit-animation': 'winnerTileAnimation 0.5s linear infinite alternate'
+})
+css.setClass('.currentPlayer1:hover', {
+  background : tinycolor(tileColors[1]).brighten(10),
+})
+css.setClass('.currentPlayer2:hover', {
+  background : tinycolor(tileColors[2]).brighten(10),
 })
 css.setClass('.player1', {
   background : tileColors[1],
@@ -63,10 +73,13 @@ let Tile = React.createClass({
     let {x, y, owner} = this.props;
     return (
       <div className={css.getClasses({
-        root       : true,
-        player1    : owner === 1,
-        player2    : owner === 2,
-        winnerTile : this.props.isWinnerTile
+        root           : true,
+        player1        : owner === 1,
+        player2        : owner === 2,
+        blocked        : owner !== 0 || BoardStore.gameEnded(),
+        currentPlayer1 : BoardStore.getCurrentPlayer() === 1,
+        currentPlayer2 : BoardStore.getCurrentPlayer() === 2,
+        winnerTile     : this.props.isWinnerTile
       })} onClick={this.onTileClick}>
         {playerToken[owner]}
       </div>
