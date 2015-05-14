@@ -15,4 +15,10 @@ module.exports = {
     });
   },
 
+  restartGame: function() {
+    AppDispatcher.handleViewAction({
+      type : Constants.ActionTypes.RESTART_GAME
+    });
+  },
+
 };

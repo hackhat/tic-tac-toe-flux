@@ -1,9 +1,10 @@
-const React      = require('react');
-const SmartCSS   = require('smart-css');
-const tinycolor  = require('tinycolor2');
-const BoardStore = require('../stores/BoardStore');
-const tileColors = require('../constants/tileColors');
-const css        = new SmartCSS({name: 'header'});
+const React         = require('react');
+const SmartCSS      = require('smart-css');
+const tinycolor     = require('tinycolor2');
+const BoardStore    = require('../stores/BoardStore');
+const ActionCreator = require('../actions/BoardActionCreators');
+const tileColors    = require('../constants/tileColors');
+const css           = new SmartCSS({name: 'header'});
 
 
 css.setClass('.root', {
@@ -44,6 +45,10 @@ let Header = React.createClass({
     return {};
   },
 
+  onHeaderClick() {
+    ActionCreator.restartGame();
+  },
+
   render() {
     let highlightPlayer;
     let text;
@@ -62,7 +67,7 @@ let Header = React.createClass({
         player1 : highlightPlayer === 1,
         player2 : highlightPlayer === 2,
         draw    : BoardStore.isDrawGame()
-      })}>
+      })} onClick={this.onHeaderClick}>
         <span className={css.getClass('title')}>{text}</span>
         <span>Click to restart the game</span>
       </div>

@@ -189,6 +189,10 @@ let BoardStore = assign({}, BaseStore, {
         updateGameState();
         BoardStore.emitChange();
         break;
+      case Constants.ActionTypes.RESTART_GAME:
+        reset();
+        BoardStore.emitChange();
+        break;
     }
   })
 
