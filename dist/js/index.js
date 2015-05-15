@@ -35674,20 +35674,27 @@ var css = new SmartCSS({ name: 'app' });
 // the tiles should have 1:1 aspect ratio and just setting a percentage
 // on width is not enough).
 css.setClass('.root', {
-  position: 'absolute',
   top: '0',
   right: '0',
   bottom: '0',
   left: '0',
-  transition: '0.3s all' });
+  minHeight: '100%',
+  padding: '60px 0 20px 0' });
 css.setClass('.player1', {
   background: tinycolor(tileColors[1]).setAlpha(0.2) });
 css.setClass('.player2', {
   background: tinycolor(tileColors[2]).setAlpha(0.2) });
 css.setClass('.gameContainer', {
   width: 64 * 3 + 'px',
-  margin: '20px auto 0 auto',
+  margin: ' 0 auto',
   position: 'relative' });
+css.setClass('.board', {
+  transition: '0.5s all',
+  transform: 'scaleY(1) rotateZ(0)'
+});
+css.setClass('.endGame', {
+  transform: 'scaleY(0.5) rotateZ(-45deg)'
+});
 
 var App = React.createClass({ displayName: 'App',
 
@@ -35723,7 +35730,10 @@ var App = React.createClass({ displayName: 'App',
     return React.createElement('div', { className: css.getClasses({
         root: true,
         player1: highlightPlayer === 1,
-        player2: highlightPlayer === 2 }) }, React.createElement('div', { className: css.getClass('gameContainer') }, React.createElement(Header, null), children));
+        player2: highlightPlayer === 2 }) }, React.createElement('div', { className: css.getClasses({
+        gameContainer: true }) }, React.createElement(Header, null), React.createElement('div', { className: css.getClasses({
+        board: true,
+        endGame: BoardStore.gameEnded() }) }, children)));
   }
 
 });
@@ -35749,6 +35759,9 @@ css.setClass('.root', {
   padding: '0 10px',
   cursor: 'pointer',
   transition: '0.3s all' });
+css.setClass('.root:hover', {
+  transform: 'translateY(-10px)'
+});
 css.setClass('.player1', {
   background: tileColors[1] });
 css.setClass('.player1:hover', {
@@ -35763,34 +35776,49 @@ css.setClass('.draw:hover', {
   background: tinycolor(tileColors[0]).darken(20) });
 css.setClass('.title', {
   fontSize: '22px',
-  lineHeight: '36px',
-  display: 'block'
+  lineHeight: '22px',
+  display: 'inline-block',
+  transition: '0.3s all',
+  paddingTop: '10px'
+});
+css.setClass('.subTitle', {
+  transition: '0.3s all',
+  fontSize: '12px'
+});
+css.setClass('.root:hover .subTitle', {
+  letterSpacing: '0.5px'
+});
+css.setClass('.root:hover .title', {
+  letterSpacing: '0.5px'
 });
 
 var Header = React.createClass({ displayName: 'Header',
 
   onHeaderClick: function onHeaderClick() {
+    if (!BoardStore.gameEnded()) return;
     ActionCreator.restartGame();
   },
 
   render: function render() {
     var highlightPlayer = undefined;
-    var text = undefined;
+    var titleText = undefined;
+    var subTitleText = 'Click/tap here to play again';
     if (BoardStore.isDrawGame()) {
-      text = 'Draw game...';
+      titleText = 'Draw game...';
     } else if (BoardStore.gameEnded()) {
-      text = 'Player ' + BoardStore.getWinner() + ' won!';
+      titleText = 'Player ' + BoardStore.getWinner() + ' won!';
       highlightPlayer = BoardStore.getWinner();
     } else {
-      text = 'Player ' + BoardStore.getCurrentPlayer() + ' turn.';
+      titleText = 'Player ' + BoardStore.getCurrentPlayer() + '\'s turn';
       highlightPlayer = BoardStore.getCurrentPlayer();
+      subTitleText = 'Please click/tap on a tile';
     }
     return React.createElement('div', { className: css.getClasses({
         root: true,
         player1: highlightPlayer === 1,
         player2: highlightPlayer === 2,
         draw: BoardStore.isDrawGame()
-      }), onClick: this.onHeaderClick }, React.createElement('span', { className: css.getClass('title') }, text), React.createElement('span', null, 'Click to restart the game'));
+      }), onClick: this.onHeaderClick }, React.createElement('span', { className: css.getClass('title') }, titleText), React.createElement('span', { className: css.getClass('subTitle') }, subTitleText));
   }
 
 });
@@ -35803,6 +35831,7 @@ module.exports = Header;
 var React = require('react');
 var SmartCSS = require('smart-css');
 var ActionCreator = require('../actions/BoardActionCreators');
+var BoardStore = require('../stores/BoardStore');
 var tinycolor = require('tinycolor2');
 var tileColors = require('../constants/tileColors');
 var css = new SmartCSS({ name: 'tile' });
@@ -35826,16 +35855,22 @@ css.setClass('.root', {
   background: 'white',
   margin: '1px'
 });
+css.setClass('.blocked', {
+  cursor: 'not-allowed' });
 css.setClass('.winnerTile', {
   '-webkit-animation': 'winnerTileAnimation 0.5s linear infinite alternate'
 });
-css.setClass('.player1', {
-  background: tileColors[1] });
-css.setClass('.player1:hover', {
+css.setClass('.currentPlayer1:hover', {
   background: tinycolor(tileColors[1]).brighten(10) });
-css.setClass('.player2', {
+css.setClass('.currentPlayer2:hover', {
+  background: tinycolor(tileColors[2]).brighten(10) });
+css.setClass('.ownedByPlayer1', {
+  background: tileColors[1] });
+css.setClass('.ownedByPlayer1:hover', {
+  background: tinycolor(tileColors[1]).brighten(10) });
+css.setClass('.ownedByPlayer2', {
   background: tileColors[2] });
-css.setClass('.player2:hover', {
+css.setClass('.ownedByPlayer2:hover', {
   background: tinycolor(tileColors[2]).brighten(10) });
 
 var Tile = React.createClass({ displayName: 'Tile',
@@ -35865,10 +35900,14 @@ var Tile = React.createClass({ displayName: 'Tile',
     var y = _props2.y;
     var owner = _props2.owner;
 
+    var blocked = owner !== 0 || BoardStore.gameEnded();
     return React.createElement('div', { className: css.getClasses({
         root: true,
-        player1: owner === 1,
-        player2: owner === 2,
+        ownedByPlayer1: owner === 1,
+        ownedByPlayer2: owner === 2,
+        blocked: blocked,
+        currentPlayer1: !blocked && BoardStore.getCurrentPlayer() === 1,
+        currentPlayer2: !blocked && BoardStore.getCurrentPlayer() === 2,
         winnerTile: this.props.isWinnerTile
       }), onClick: this.onTileClick }, playerToken[owner]);
   }
@@ -35877,7 +35916,7 @@ var Tile = React.createClass({ displayName: 'Tile',
 
 module.exports = Tile;
 
-},{"../actions/BoardActionCreators":173,"../constants/tileColors":179,"react":163,"smart-css":170,"tinycolor2":172}],177:[function(require,module,exports){
+},{"../actions/BoardActionCreators":173,"../constants/tileColors":179,"../stores/BoardStore":182,"react":163,"smart-css":170,"tinycolor2":172}],177:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -35887,7 +35926,7 @@ var css = new SmartCSS({ name: 'tileRow' });
 css.setClass('.root', {
   width: 64 * 3 + 'px',
   height: 64 * 1 + 'px',
-  float: 'left'
+  display: 'block'
 });
 
 var Tile = React.createClass({ displayName: 'Tile',
@@ -36220,30 +36259,60 @@ var BoardStore = assign({}, BaseStore, {
     return _data;
   },
 
+  /**
+   * Returns an array with the tiles that lead to a winner. Empty if no one
+   * won. Be careful that it can contain more than 3 tiles.
+   * @return {Object[]} winer tiles;
+   */
   getWinnerTiles: function getWinnerTiles() {
     return _winnerTiles;
   },
 
+  /**
+   * Checks whenever a certain tile is a winner tile.
+   * @param  {Number} x
+   * @param  {Number} y
+   * @return {Boolean}
+   */
   isWinnerTile: function isWinnerTile(x, y) {
     return !!_.find(_winnerTiles, { x: x, y: y });
   },
 
+  /**
+   * Returns the size of the board.
+   * @return {Number}
+   */
   getSize: function getSize() {
     return BOARD_SIZE;
   },
 
+  /**
+   * Returns the player id that won if any. If no player won then this value will be
+   * undefined.
+   * @return {Number|undefined}
+   */
   getWinner: function getWinner() {
     return _winner;
   },
 
+  /**
+   * @return {Boolean} Returns true if game has ended and false if has not yet ended.
+   */
   gameEnded: function gameEnded() {
     return _gameEnded;
   },
 
+  /**
+   * @return {Number} Returns the current player id.
+   */
   getCurrentPlayer: function getCurrentPlayer() {
     return _getCurrentPlayer();
   },
 
+  /**
+   * @return {Boolean} Returns true if is a draw game. This happens only
+   *                   if there is no winner and the game ended.
+   */
   isDrawGame: function isDrawGame() {
     return this.gameEnded() && this.getWinner() === void 0;
   },

@@ -5303,3 +5303,7 @@ button.close {
     opacity: 0.25; }
   to {
     opacity: 1; } }
+
+html, body, #main {
+  height: 100%;
+  margin: 0; }
