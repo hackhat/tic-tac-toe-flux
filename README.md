@@ -1,13 +1,15 @@
 <p align="center">
-  <img src ="./docs/repo-header2.gif" />
+  <img src ="./docs/repo-header.gif" />
 </p>
 
 **[Live example](https://rawgit.com/hackhat/tic-tac-toe-flux/v0.0.2/dist/index.html)**
 
-<p align="center">
-  <img src ="./docs/repo-header.gif" />
-</p>
+
 This is just a simple tic tac toe game using the flux architecture and react view engine.
+
+<p align="center">
+  <img src ="./docs/repo-header2.gif" />
+</p>
 
 ## Running your project
 
