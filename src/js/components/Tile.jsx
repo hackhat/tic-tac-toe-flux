@@ -37,16 +37,16 @@ css.setClass('.currentPlayer1:hover', {
 css.setClass('.currentPlayer2:hover', {
   background : tinycolor(tileColors[2]).brighten(10),
 })
-css.setClass('.player1', {
+css.setClass('.ownedByPlayer1', {
   background : tileColors[1],
 })
-css.setClass('.player1:hover', {
+css.setClass('.ownedByPlayer1:hover', {
   background : tinycolor(tileColors[1]).brighten(10),
 })
-css.setClass('.player2', {
+css.setClass('.ownedByPlayer2', {
   background : tileColors[2],
 })
-css.setClass('.player2:hover', {
+css.setClass('.ownedByPlayer2:hover', {
   background : tinycolor(tileColors[2]).brighten(10),
 })
 
@@ -71,14 +71,15 @@ let Tile = React.createClass({
 
   render() {
     let {x, y, owner} = this.props;
+    let blocked = owner !== 0 || BoardStore.gameEnded()
     return (
       <div className={css.getClasses({
         root           : true,
-        player1        : owner === 1,
-        player2        : owner === 2,
-        blocked        : owner !== 0 || BoardStore.gameEnded(),
-        currentPlayer1 : BoardStore.getCurrentPlayer() === 1,
-        currentPlayer2 : BoardStore.getCurrentPlayer() === 2,
+        ownedByPlayer1 : owner === 1,
+        ownedByPlayer2 : owner === 2,
+        blocked        : blocked,
+        currentPlayer1 : !blocked && BoardStore.getCurrentPlayer() === 1,
+        currentPlayer2 : !blocked && BoardStore.getCurrentPlayer() === 2,
         winnerTile     : this.props.isWinnerTile
       })} onClick={this.onTileClick}>
         {playerToken[owner]}

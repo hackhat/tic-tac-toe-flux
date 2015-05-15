@@ -18,8 +18,8 @@ css.setClass('.root', {
   right      : '0',
   bottom     : '0',
   left       : '0',
-  transition : '0.3s all',
   minHeight  : '100%',
+  padding    : '60px 0 20px 0',
 })
 css.setClass('.player1', {
   background : tinycolor(tileColors[1]).setAlpha(0.2),
@@ -31,7 +31,13 @@ css.setClass('.gameContainer', {
   width    : (64 * 3) + 'px',
   margin   : ' 0 auto',
   position : 'relative',
-  padding  : '60px 0 20px 0',
+})
+css.setClass('.board', {
+  transition : '0.3s all',
+  transform  : 'scaleY(1) rotateZ(0)'
+})
+css.setClass('.endGame', {
+  transform: 'scaleY(0.5) rotateZ(-45deg)'
 })
 
 let App = React.createClass({
@@ -71,9 +77,16 @@ let App = React.createClass({
         player1 : highlightPlayer === 1,
         player2 : highlightPlayer === 2,
       })}>
-        <div className={css.getClass("gameContainer")}>
+        <div className={css.getClasses({
+          gameContainer : true,
+        })}>
           <Header></Header>
-          {children}
+          <div className={css.getClasses({
+            board   : true,
+            endGame : BoardStore.gameEnded(),
+          })}>
+            {children}
+          </div>
         </div>
       </div>
     );
