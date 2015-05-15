@@ -33,7 +33,7 @@ css.setClass('.gameContainer', {
   position : 'relative',
 })
 css.setClass('.board', {
-  transition : '0.3s all',
+  transition : '0.5s all',
   transform  : 'scaleY(1) rotateZ(0)'
 })
 css.setClass('.endGame', {

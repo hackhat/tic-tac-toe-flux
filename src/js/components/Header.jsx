@@ -16,6 +16,9 @@ css.setClass('.root', {
   cursor     : 'pointer',
   transition : '0.3s all',
 })
+css.setClass('.root:hover', {
+  transform: 'translateY(-10px)'
+})
 css.setClass('.player1', {
   background : tileColors[1],
 })
@@ -36,27 +39,42 @@ css.setClass('.draw:hover', {
 })
 css.setClass('.title', {
   fontSize   : '22px',
-  lineHeight : '36px',
-  display    : 'block'
+  lineHeight : '22px',
+  display    : 'inline-block',
+  transition : '0.3s all',
+  paddingTop : '10px'
+})
+css.setClass('.subTitle', {
+  transition : '0.3s all',
+  fontSize   : '12px'
+})
+css.setClass('.root:hover .subTitle', {
+  letterSpacing: '0.5px'
+})
+css.setClass('.root:hover .title', {
+  letterSpacing: '0.5px'
 })
 
 let Header = React.createClass({
 
   onHeaderClick() {
+    if(!BoardStore.gameEnded()) return;
     ActionCreator.restartGame();
   },
 
   render() {
     let highlightPlayer;
-    let text;
+    let titleText;
+    let subTitleText = 'Click/tap here to play again';
     if(BoardStore.isDrawGame()){
-      text = 'Draw game...'
+      titleText = 'Draw game...'
     }else if(BoardStore.gameEnded()){
-      text = 'Player ' + BoardStore.getWinner() + ' won!';
+      titleText = 'Player ' + BoardStore.getWinner() + ' won!';
       highlightPlayer = BoardStore.getWinner();
     }else{
-      text = 'Player ' + BoardStore.getCurrentPlayer() + ' turn.';
+      titleText = 'Player ' + BoardStore.getCurrentPlayer() + '\'s turn';
       highlightPlayer = BoardStore.getCurrentPlayer();
+      subTitleText = 'Please click/tap on a tile'
     }
     return (
       <div className={css.getClasses({
@@ -65,8 +83,8 @@ let Header = React.createClass({
         player2 : highlightPlayer === 2,
         draw    : BoardStore.isDrawGame()
       })} onClick={this.onHeaderClick}>
-        <span className={css.getClass('title')}>{text}</span>
-        <span>Click to restart the game</span>
+        <span className={css.getClass('title')}>{titleText}</span>
+        <span className={css.getClass('subTitle')}>{subTitleText}</span>
       </div>
     );
   }
