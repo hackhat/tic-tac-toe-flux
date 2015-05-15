@@ -19,6 +19,7 @@ css.setClass('.root', {
   bottom     : '0',
   left       : '0',
   minHeight  : '100%',
+  transition : '0.5s all',
   padding    : '60px 0 20px 0',
 })
 css.setClass('.player1', {
