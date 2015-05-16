@@ -57,7 +57,7 @@ css.setClass('.root:hover .title', {
 
 let Header = React.createClass({
 
-  onHeaderClick() {
+  onHeaderHit() {
     if(!BoardStore.gameEnded()) return;
     ActionCreator.restartGame();
   },
@@ -82,7 +82,7 @@ let Header = React.createClass({
         player1 : highlightPlayer === 1,
         player2 : highlightPlayer === 2,
         draw    : BoardStore.isDrawGame()
-      })} onClick={this.onHeaderClick}>
+      })} onMouseDown={this.onHeaderHit}>
         <span className={css.getClass('title')}>{titleText}</span>
         <span className={css.getClass('subTitle')}>{subTitleText}</span>
       </div>

@@ -35795,7 +35795,7 @@ css.setClass('.root:hover .title', {
 
 var Header = React.createClass({ displayName: 'Header',
 
-  onHeaderClick: function onHeaderClick() {
+  onHeaderHit: function onHeaderHit() {
     if (!BoardStore.gameEnded()) return;
     ActionCreator.restartGame();
   },
@@ -35819,7 +35819,7 @@ var Header = React.createClass({ displayName: 'Header',
         player1: highlightPlayer === 1,
         player2: highlightPlayer === 2,
         draw: BoardStore.isDrawGame()
-      }), onClick: this.onHeaderClick }, React.createElement('span', { className: css.getClass('title') }, titleText), React.createElement('span', { className: css.getClass('subTitle') }, subTitleText));
+      }), onMouseDown: this.onHeaderHit }, React.createElement('span', { className: css.getClass('title') }, titleText), React.createElement('span', { className: css.getClass('subTitle') }, subTitleText));
   }
 
 });
@@ -35884,7 +35884,7 @@ var Tile = React.createClass({ displayName: 'Tile',
       isWinnerTile: false };
   },
 
-  onTileClick: function onTileClick() {
+  onTileHit: function onTileHit() {
     var _props = this.props;
     var x = _props.x;
     var y = _props.y;
@@ -35910,7 +35910,7 @@ var Tile = React.createClass({ displayName: 'Tile',
         currentPlayer1: !blocked && BoardStore.getCurrentPlayer() === 1,
         currentPlayer2: !blocked && BoardStore.getCurrentPlayer() === 2,
         winnerTile: this.props.isWinnerTile
-      }), onClick: this.onTileClick }, playerToken[owner]);
+      }), onMouseDown: this.onTileHit }, playerToken[owner]);
   }
 
 });

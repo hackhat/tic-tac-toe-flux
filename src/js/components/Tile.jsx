@@ -61,7 +61,7 @@ let Tile = React.createClass({
     };
   },
 
-  onTileClick() {
+  onTileHit() {
     let {x, y} = this.props;
     ActionCreator.playPosition({
       x : x,
@@ -81,7 +81,7 @@ let Tile = React.createClass({
         currentPlayer1 : !blocked && BoardStore.getCurrentPlayer() === 1,
         currentPlayer2 : !blocked && BoardStore.getCurrentPlayer() === 2,
         winnerTile     : this.props.isWinnerTile
-      })} onClick={this.onTileClick}>
+      })} onMouseDown={this.onTileHit}>
         {playerToken[owner]}
       </div>
     );
